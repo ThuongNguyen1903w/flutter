@@ -1,0 +1,40 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi có push vào nhánh 'main'
+  pull_request:
+    branches:
+      - main  # Chạy khi có pull request vào nhánh 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Chạy trên môi trường Ubuntu
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3  # Lấy mã nguồn từ repository
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2  # Cài đặt Flutter
+      with:
+        flutter-version: '3.7.0'  # Chọn phiên bản Flutter bạn muốn sử dụng
+
+    - name: Install dependencies
+      run: flutter pub get  # Cài đặt các package Flutter
+
+    - name: Run Flutter tests
+      run: flutter test  # Chạy các bài kiểm tra Flutter (nếu có)
+
+    - name: Build APK for Android
+      run: flutter build apk --release  # Xây dựng APK cho ứng dụng Android
+
+    - name: Build iOS App (Optional)
+      run: flutter build ios --release  # Xây dựng ứng dụng iOS (nếu có thể)
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v3  # Lưu trữ các artifact build
+      with:
+        name: flutter-build
+        path: build/
