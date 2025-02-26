@@ -3,38 +3,38 @@ name: Flutter CI/CD
 on:
   push:
     branches:
-      - main  # Chạy khi có push vào nhánh 'main'
+      - main  # Trigger on push to main branch
   pull_request:
     branches:
-      - main  # Chạy khi có pull request vào nhánh 'main'
+      - main  # Trigger on pull request to main branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Chạy trên môi trường Ubuntu
+    runs-on: ubuntu-latest  # Use Ubuntu runner for CI/CD
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # Lấy mã nguồn từ repository
+      uses: actions/checkout@v3  # Checkout the code from GitHub repository
 
     - name: Set up Flutter
-      uses: subosito/flutter-action@v2  # Cài đặt Flutter
+      uses: subosito/flutter-action@v2  # Set up Flutter environment
       with:
-        flutter-version: '3.7.0'  # Chọn phiên bản Flutter bạn muốn sử dụng
+        flutter-version: '3.7.0'  # Specify Flutter version
 
     - name: Install dependencies
-      run: flutter pub get  # Cài đặt các package Flutter
+      run: flutter pub get  # Install Flutter dependencies
 
     - name: Run Flutter tests
-      run: flutter test  # Chạy các bài kiểm tra Flutter (nếu có)
+      run: flutter test  # Run the Flutter unit tests
 
     - name: Build APK for Android
-      run: flutter build apk --release  # Xây dựng APK cho ứng dụng Android
+      run: flutter build apk --release  # Build APK for Android
 
     - name: Build iOS App (Optional)
-      run: flutter build ios --release  # Xây dựng ứng dụng iOS (nếu có thể)
+      run: flutter build ios --release  # Build iOS app (if applicable)
 
     - name: Archive build artifacts
-      uses: actions/upload-artifact@v3  # Lưu trữ các artifact build
+      uses: actions/upload-artifact@v4  # Use updated version of the upload artifact action
       with:
         name: flutter-build
         path: build/
